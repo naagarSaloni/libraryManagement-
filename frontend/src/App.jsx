@@ -1,5 +1,6 @@
 import './App.css';
 import Navbar from './components/Navbar';
+import Footer from './components/Footer';
 import libraryImage from './assets/library.jpg';
 import GlassCard from './components/GlassCard';
 import img1 from './assets/book1.jpg';
@@ -54,6 +55,7 @@ function App() {
     onButtonClick={() => console.log("Explore Events clicked")} 
   />
 </div>
+<Footer />
     </>
   );
 }

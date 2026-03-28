@@ -1,10 +1,22 @@
+/* ===== GLOBAL ===== */
 body {
   margin: 0;
   padding: 0;
+
+  /* 🔥 smoother, image-based gradient */
+  background: linear-gradient(
+    135deg,
+    #020617 0%,
+    #0f172a 30%,
+    #1e293b 60%,
+    #7c2d12 100%
+  );
+
+  color: white;
   font-family: Arial, sans-serif;
 }
 
-/* Hero Section */
+/* ===== HERO SECTION ===== */
 .hero {
   position: relative;
   width: 100vw;
@@ -19,99 +31,127 @@ body {
   display: block;
 }
 
-/* Dark overlay */
+/* ===== OVERLAY ===== */
 .overlay {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0,0,0,0.5);
+
+  /* 🔥 smoother blend (important fix) */
+  background: linear-gradient(
+    to right,
+    rgba(2, 6, 23, 0.85),
+    rgba(15, 23, 42, 0.7),
+    rgba(249, 115, 22, 0.25)
+  );
+
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  text-align: center;
-  color: #fff;
 }
 
-.overlay h1 {
-  font-size: 3rem;
-  margin: 0;
-}
-/* Glass CTA Card */
-.cta-card {
+/* ===== GLASS CARD (USED EVERYWHERE) ===== */
+.cta-card, .card {
   margin-top: 20px;
-  background: linear-gradient(135deg, rgba(56, 189, 248, 0.2), rgba(14, 165, 233, 0.2));
-  backdrop-filter: blur(15px);
-  -webkit-backdrop-filter: blur(15px);
-  border-radius: 15px;
+
+  /* 🔥 unified gradient */
+  background: linear-gradient(
+    135deg,
+    rgba(56, 189, 248, 0.12),
+    rgba(30, 41, 59, 0.25),
+    rgba(249, 115, 22, 0.12)
+  );
+
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+
+  border-radius: 18px;
   padding: 20px 40px;
+
+  color: white;
+  font-weight: bold;
+
+  box-shadow: 
+    0 8px 32px rgba(0,0,0,0.25),
+    inset 0 1px 1px rgba(255,255,255,0.05);
+
+  border: 1px solid rgba(255,255,255,0.08);
+
+  transition: all 0.3s ease;
+}
+
+/* ===== CTA CARD ===== */
+.cta-card {
   cursor: pointer;
   font-size: 1.5rem;
-  color: #fff;
-  font-weight: bold;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.15);
-  transition: transform 0.3s, box-shadow 0.3s;
-}
-/* Welcome Card: no hover effect */
-.welcome-card {
-  cursor: default; /* remove pointer cursor */
-  background: linear-gradient(135deg, rgba(56, 189, 248, 0.15), rgba(14, 165, 233, 0.15));
-}
-
-/* Remove hover effect for welcome card */
-.welcome-card:hover {
-  transform: none;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.15);
 }
 
 .cta-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 12px 40px rgba(0,0,0,0.3);
+  transform: translateY(-6px);
+  box-shadow: 
+    0 12px 40px rgba(0,0,0,0.35),
+    inset 0 1px 1px rgba(255,255,255,0.08);
 }
 
-.overlay .cta-text {
-  font-size: 2rem;
-  margin-top: 20px;
-  cursor: pointer;
-  color: #38bdf8;
-  transition: 0.3s;
+/* ===== WELCOME CARD ===== */
+.welcome-card {
+  cursor: default;
 }
 
-.overlay .cta-text:hover {
-  color: #0ea5e9;
+.welcome-card:hover {
+  transform: none;
+  box-shadow: 
+    0 8px 32px rgba(0,0,0,0.25),
+    inset 0 1px 1px rgba(255,255,255,0.05);
 }
 
-/* Glass Cards Section */
+/* ===== CARDS SECTION ===== */
 .cards-section {
+  position: relative;
+
   display: flex;
   justify-content: center;
   gap: 30px;
-  padding: 60px 20px;
-  background: #1f3454;
+  padding: 100px 20px;
+
+  /* 🔥 smooth transition from hero */
+  background: linear-gradient(
+    to bottom,
+    rgba(2, 6, 23, 0.9),
+    #0f172a,
+    #020617
+  );
+
   flex-wrap: wrap;
-  width: 100vw;
 }
 
+/* 🔥 fade effect from hero */
+.cards-section::before {
+  content: "";
+  position: absolute;
+  top: -80px;
+  left: 0;
+  width: 100%;
+  height: 80px;
+
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    #020617
+  );
+}
+
+/* ===== INDIVIDUAL CARD SIZE ===== */
 .card {
-  background: rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border-radius: 15px;
-  width: 250px;
-  height: 150px;
+  width: 260px;
+  height: 160px;
+
   display: flex;
   justify-content: center;
   align-items: center;
-  color: #111;
-  font-size: 1.2rem;
-  font-weight: bold;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.1);
-  transition: transform 0.3s, box-shadow 0.3s;
-}
 
-.card:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 12px 40px rgba(0,0,0,0.2);
+  font-size: 1.2rem;
 }

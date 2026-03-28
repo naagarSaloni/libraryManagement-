@@ -1,29 +1,42 @@
 .navbar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #1f3454;
+
   padding: 15px 30px;
+
+  /* 🔥 Glass + gradient matching hero image */
+  background: linear-gradient(
+    135deg,
+    rgba(15, 23, 42, 0.8),   /* deep blue */
+    rgba(30, 41, 59, 0.6),   /* mid tone */
+    rgba(249, 115, 22, 0.2)  /* warm orange hint */
+  );
+
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+
   color: white;
-  width: 95vw;
-  height: 35px;
-}
 
-.logo {
-  margin: 0;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+}
+.nav-links a {
+  text-decoration: none;
   color: white;
+  font-weight: 500;
+
+  transition: all 0.3s ease;
 }
 
-.nav-links {
-  list-style: none;
-  display: flex;
-  gap: 20px;
-}
-
-.nav-links li {
-  cursor: pointer;
-}
-
-.nav-links li:hover {
+.nav-links a:hover {
+  color: #38bdf8; /* soft blue highlight */
+}.nav-links a:hover {
   color: #38bdf8;
+  text-shadow: 0 0 8px rgba(56, 189, 248, 0.6);
 }
