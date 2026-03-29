@@ -4,8 +4,8 @@
   right:0;
   left:0;
   z-index: 1000;
-  width: 98%;
-  height : 70px;
+  width: 97%;
+  height : 40px;
 
   display: flex;
   justify-content: space-between;
@@ -36,7 +36,7 @@
 
 .nav-links {
   display: flex;     /* 🔥 this makes it horizontal */
-  gap: 20px;         /* space between items */
+  gap: 30px;         /* space between items */
 
   list-style: none;
   margin: 0;
