@@ -1,4 +1,4 @@
-import './Auth.css'
+ import './Auth.css'
 import Navbar from '../components/Navbar'
 import bgImage from '../assets/library.jpg'
 
@@ -14,7 +14,7 @@ function Login() {
           <div className="auth-card">
             <h2>Login</h2>
 
-            <input type="email" placeholder="Email" />
+            <input type="text" placeholder="Username" />
             <input type="password" placeholder="Password" />
 
             <button>Login</button>
