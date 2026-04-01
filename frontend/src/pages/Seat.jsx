@@ -1,94 +1,191 @@
-import { useState } from "react";
+  import { useMemo, useState } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import "./Seat.css";
+import hallsData from "../assets/hallData.js";
+import "./Books.css";
 
 function Seat() {
-  const rows = ["A", "B", "C", "D", "E"];
-  const cols = [1, 2, 3, 4, 5, 6];
+  const [selectedHallId, setSelectedHallId] = useState(hallsData[0].id);
+  const [selectedSeats, setSelectedSeats] = useState([]);
+  const [popupMessage, setPopupMessage] = useState("");
 
-  const alreadyBooked = ["A3", "B2", "C5", "D1", "E4"];
+  const selectedHall = hallsData.find(
+    (hall) => hall.id === Number(selectedHallId)
+  );
 
-  const [selectedSeat, setSelectedSeat] = useState(null);
-  const [bookedSeats, setBookedSeats] = useState(alreadyBooked);
+  const totalSeats = useMemo(() => {
+    return selectedHall.rows.reduce((sum, row) => {
+      return (
+        sum +
+        row.tables.reduce((rowSum, table) => {
+          return rowSum + table.leftSeats.length + table.rightSeats.length;
+        }, 0)
+      );
+    }, 0);
+  }, [selectedHall]);
 
-  const handleSeatClick = (seatNumber) => {
-    if (bookedSeats.includes(seatNumber)) return;
-    setSelectedSeat(seatNumber);
-  };
+  const availableSeats = useMemo(() => {
+    return selectedHall.rows.reduce((sum, row) => {
+      return (
+        sum +
+        row.tables.reduce((rowSum, table) => {
+          const leftAvailable = table.leftSeats.filter((seat) => seat.available).length;
+          const rightAvailable = table.rightSeats.filter((seat) => seat.available).length;
+          return rowSum + leftAvailable + rightAvailable;
+        }, 0)
+      );
+    }, 0);
+  }, [selectedHall]);
 
-  const handleReserve = () => {
-    if (!selectedSeat) {
-      alert("Please select a seat first");
-      return;
+  const handleSeatClick = (seatId, available) => {
+    if (!available) return;
+
+    let message = "";
+    if (selectedSeats.includes(seatId)) {
+      setSelectedSeats((prev) => prev.filter((seat) => seat !== seatId));
+      message = `${seatId} removed`;
+    } else {
+      setSelectedSeats((prev) => [...prev, seatId]);
+      message = `${seatId} selected successfully`;
     }
 
-    setBookedSeats([...bookedSeats, selectedSeat]);
-    alert(`Seat ${selectedSeat} reserved successfully`);
-    setSelectedSeat(null);
+    setPopupMessage(message);
+    setTimeout(() => setPopupMessage(""), 1500);
   };
 
-  return (
-    <>
-      <Navbar />
+   return (
+  <>
+    <Navbar />
 
-      <div className="seat-page">
-        <section className="page-hero">
-          <div className="page-hero-overlay">
-            <p className="page-subtitle">CHOOSE • RESERVE • STUDY</p>
-            <h1 className="page-title">Library Seating</h1>
-            <p className="page-description">
-              Reserve your preferred study space and enjoy a smooth,
-              distraction-free library experience.
-            </p>
-
-            <div className="page-hero-buttons">
-              <button className="primary-btn">Reserve Now</button>
-              <button className="secondary-btn">View Layout</button>
-            </div>
-          </div>
-        </section>
-
-        <div className="legend">
-          <span><div className="box available"></div> Available</span>
-          <span><div className="box selected"></div> Selected</span>
-          <span><div className="box booked"></div> Reserved</span>
+    <div className="books-page">
+      <section className="page-hero">
+        <div className="page-hero-overlay">
+          <p className="page-subtitle">SELECT • RESERVE • STUDY</p>
+          <h1 className="page-title">Reading Hall Seat Booking</h1>
+          <p className="page-description">
+            Choose a hall and book a seat from a library-style arrangement.
+          </p>
         </div>
+      </section>
 
-        <div className="seat-layout-wrapper">
-          <div className="seat-container">
-            {rows.map((row) => (
-              <div key={row} className="row">
-                <span className="row-label">{row}</span>
-
-                {cols.map((col) => {
-                  const seatNumber = `${row}${col}`;
-                  const isBooked = bookedSeats.includes(seatNumber);
-                  const isSelected = selectedSeat === seatNumber;
-
-                  return (
-                    <div
-                      key={seatNumber}
-                      className={`seat ${isBooked ? "booked" : ""} ${isSelected ? "selected" : ""}`}
-                      onClick={() => handleSeatClick(seatNumber)}
-                    >
-                      {seatNumber}
-                    </div>
-                  );
-                })}
-              </div>
+      <div className="hall-controls-box">
+        <div className="control-group centered-control">
+          <label htmlFor="hall">Choose Hall</label>
+          <select
+            id="hall"
+            value={selectedHallId}
+            onChange={(e) => {
+              setSelectedHallId(e.target.value);
+              setSelectedSeats([]);
+            }}
+          >
+            {hallsData.map((hall) => (
+              <option key={hall.id} value={hall.id}>
+                {hall.name}
+              </option>
             ))}
-          </div>
+          </select>
         </div>
 
-        <div className="info-box">
-          <h3>Selected Seat: {selectedSeat || "None"}</h3>
-          <button onClick={handleReserve}>Reserve Seat</button>
+        <div className="hall-stats">
+          <div className="stat-card">
+            <span className="stat-label">Rows</span>
+            <strong>{selectedHall.rows.length}</strong>
+          </div>
+          <div className="stat-card">
+            <span className="stat-label">Total Seats</span>
+            <strong>{totalSeats}</strong>
+          </div>
+          <div className="stat-card">
+            <span className="stat-label">Available</span>
+            <strong>{availableSeats}</strong>
+          </div>
         </div>
       </div>
 
-      <Footer />
-    </>
+      <div className="legend-row">
+        <div><span className="legend-box available-seat"></span> Available</div>
+        <div><span className="legend-box booked-seat"></span> Booked</div>
+        <div><span className="legend-box selected-seat"></span> Selected</div>
+      </div>
+
+      <div className="hall-layout-box">
+        <div className="gate-row">
+          <div className="gate gate-entry">ENTRY</div>
+          <div className="aisle-label">Central Study Aisle</div>
+          <div className="gate gate-exit">EXIT</div>
+        </div>
+
+        <div className="library-floor">
+          {selectedHall.rows.map((row) => (
+            <div className="hall-row" key={row.rowNo}>
+              {row.tables.map((table, tableIndex) => (
+                <div className="study-table-block" key={table.tableId}>
+                  
+                  <div className="seat-column left-column">
+                    {table.leftSeats.map((seat) => (
+                      <button
+                        key={seat.id}
+                        className={`chair-seat ${
+                          selectedSeats.includes(seat.id)
+                            ? "selected-seat"
+                            : seat.available
+                            ? "available-seat"
+                            : "booked-seat"
+                        }`}
+                        onClick={() => handleSeatClick(seat.id, seat.available)}
+                      >
+                        {seat.id}
+                      </button>
+                    ))}
+                  </div>
+
+                  <div className="table-rectangle">
+                    <span>Table {tableIndex + 1}</span>
+                  </div>
+
+                  <div className="seat-column right-column">
+                    {table.rightSeats.map((seat) => (
+                      <button
+                        key={seat.id}
+                        className={`chair-seat ${
+                          selectedSeats.includes(seat.id)
+                            ? "selected-seat"
+                            : seat.available
+                            ? "available-seat"
+                            : "booked-seat"
+                        }`}
+                        onClick={() => handleSeatClick(seat.id, seat.available)}
+                      >
+                        {seat.id}
+                      </button>
+                    ))}
+                  </div>
+
+                </div>
+              ))}
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="booking-summary-box">
+        <h3>Selected Seats</h3>
+        <p>
+          {selectedSeats.length > 0
+            ? selectedSeats.join(", ")
+            : "No seat selected yet."}
+        </p>
+        <button className="book-now-btn">Book Now</button>
+      </div>
+    </div>
+
+    {/* ✅ Popup OUTSIDE main div */}
+    {popupMessage && <div className="seat-popup">{popupMessage}</div>}
+
+    <Footer />
+  </>
   );
 }
 
