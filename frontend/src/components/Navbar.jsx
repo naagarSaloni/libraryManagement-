@@ -1,15 +1,29 @@
-import './Navbar.css'
-import { Link } from 'react-router-dom'
+  import './Navbar.css'
+import { NavLink } from 'react-router-dom'
 
 function Navbar() {
   return (
     <nav className="navbar">
-      <h2 className="logo">📚 SmartLib</h2>
+      <h2 className="logo">
+        Library <span>Hub</span>
+      </h2>
 
       <ul className="nav-links">
-        <li><Link to="/">Home</Link></li>
-        <li><Link to="/register">Register</Link></li>
-        <li><Link to="/login">Login</Link></li>
+        <li>
+          <NavLink to="/" className={({ isActive }) => isActive ? "active" : ""}>
+            Home
+          </NavLink>
+        </li>
+        <li>
+          <NavLink to="/register" className={({ isActive }) => isActive ? "active" : ""}>
+            Register
+          </NavLink>
+        </li>
+        <li>
+          <NavLink to="/login" className={({ isActive }) => isActive ? "active" : ""}>
+            Login
+          </NavLink>
+        </li>
       </ul>
     </nav>
   )
