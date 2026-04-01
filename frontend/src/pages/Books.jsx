@@ -1,76 +1,112 @@
- import Navbar from "../components/Navbar";
+  import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import "./Books.css";
+import { useNavigate } from "react-router-dom";
+
+import {
+  FaBook,
+  FaFlask,
+  FaBriefcase,
+  FaGavel,
+  FaGlobe,
+  FaFeatherAlt,
+  FaHeart,
+  FaChild,
+} from "react-icons/fa";
 
 function Books() {
+  const navigate = useNavigate();
+
   const books = [
     {
-      icon: "📖",
-      title: "Data Structures",
-      desc: "Learn arrays, linked lists, trees, graphs and problem solving.",
+      icon: <FaBook />,
+      title: "Academic & Educational",
+      desc: "Covers school, college, and competitive exam subjects.",
+      category: "academic-educational",
     },
     {
-      icon: "📘",
-      title: "Operating System",
-      desc: "Understand processes, memory, scheduling and OS concepts.",
+      icon: <FaFlask />,
+      title: "Science & Technology",
+      desc: "Physics, chemistry, biology, and modern innovations.",
+      category: "science-technology",
     },
     {
-      icon: "📕",
-      title: "DBMS",
-      desc: "Master SQL, normalization, transactions and database design.",
+      icon: <FaBriefcase />,
+      title: "Business & Economics",
+      desc: "Finance, management, and entrepreneurship topics.",
+      category: "business-economics",
     },
     {
-      icon: "📙",
-      title: "Computer Networks",
-      desc: "Explore protocols, layers, routing and network architecture.",
+      icon: <FaGavel />,
+      title: "Law & Government",
+      desc: "Legal studies and governance systems.",
+      category: "law-government",
     },
     {
-      icon: "💻",
-      title: "Programming",
-      desc: "Practice coding in C++, Java, Python and build logic.",
+      icon: <FaGlobe />,
+      title: "History & Culture",
+      desc: "Explore historical events and cultural heritage.",
+      category: "history-culture",
     },
     {
-      icon: "🧠",
-      title: "Machine Learning",
-      desc: "Dive into AI, models, data analysis and predictions.",
+      icon: <FaFeatherAlt />,
+      title: "Literature & Classics",
+      desc: "Timeless novels, poetry, and literary works.",
+      category: "literature-classics",
+    },
+    {
+      icon: <FaHeart />,
+      title: "Self-Help & Growth",
+      desc: "Improve mindset, productivity, and personal growth.",
+      category: "self-help-growth",
+    },
+    {
+      icon: <FaChild />,
+      title: "Children’s Books",
+      desc: "Learning and fun books for young readers.",
+      category: "childrens-books",
     },
   ];
+
+  const handleExplore = (category) => {
+    navigate(`/books/category/${category}`);
+  };
 
   return (
     <>
       <Navbar />
+
       <div className="books-page">
+        <section className="page-hero">
+          <div className="page-hero-overlay">
+            <p className="page-subtitle">READ • LEARN • EXPLORE</p>
+            <h1 className="page-title">Book Collection</h1>
+            <p className="page-description">
+              Discover a wide range of books across multiple domains and expand your knowledge.
+            </p>
+          </div>
+        </section>
 
-        {/* HERO SECTION */}
-  <section className="page-hero">
-    <div className="page-hero-overlay">
-      <p className="page-subtitle">READ • LEARN • EXPLORE</p>
-      <h1 className="page-title">Book Collection</h1>
-      <p className="page-description">
-        Discover carefully selected academic resources designed to support
-        focused learning and better understanding.
-      </p>
+        <div className="books-grid">
+          {books.map((book, index) => (
+            <div className="book-card" key={index}>
+              <div className="book-icon">{book.icon}</div>
 
-      <div className="page-hero-buttons">
-        <button className="primary-btn">Browse Books</button>
-        <button className="secondary-btn">View Categories</button>
+              <h3>{book.title}</h3>
+              <p>{book.desc}</p>
+
+              <button
+                className="book-btn"
+                onClick={() => handleExplore(book.category)}
+              >
+                Explore
+              </button>
+            </div>
+          ))}
+        </div>
       </div>
-    </div>
-  </section>
-
-  {/* BOOK GRID */}
-  <div className="books-grid">
-    {books.map((book, index) => (
-      <div className="book-card" key={index}>
-        <h3>{book.title}</h3>
-        <p>{book.desc}</p>
-        <button className="book-btn">Explore</button>
-      </div>
-    ))}
-  </div>
 
       <Footer />
-      </div>
     </>
   );
 }
