@@ -1,52 +1,77 @@
- import Navbar from "../components/Navbar";
+  import { useNavigate } from "react-router-dom";
+import { FaComments, FaBookOpen, FaUsers, FaLightbulb, FaBullseye, FaCoffee } from "react-icons/fa";
+import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import "./Longues.css";
 
 function Longues() {
+  const navigate = useNavigate();
+
   const lounges = [
     {
-      icon: "💬",
+      id: "discussion-room",
+      icon: <FaComments />,
       title: "Discussion Room",
       description:
         "Exchange ideas, ask doubts, and have meaningful discussions with other learners in an active community space.",
       buttonText: "Join Discussion",
     },
     {
-      icon: "📚",
+      id: "reading-zone",
+      icon: <FaBookOpen />,
       title: "Reading Zone",
       description:
         "A calm and focused space designed for reading, self-study, and quiet learning without distractions.",
       buttonText: "Start Reading",
     },
     {
-      icon: "👥",
+      id: "group-study",
+      icon: <FaUsers />,
       title: "Group Study",
       description:
         "Work together with friends, revise topics, solve problems, and make learning more interactive and effective.",
       buttonText: "Join Group",
     },
     {
-      icon: "🧠",
+      id: "brainstorm-hub",
+      icon: <FaLightbulb />,
       title: "Brainstorm Hub",
       description:
         "Share creative thoughts, project ideas, and innovative solutions with a collaborative mindset.",
       buttonText: "Explore Ideas",
     },
     {
-      icon: "🎯",
+      id: "focus-pods",
+      icon: <FaBullseye />,
       title: "Focus Pods",
       description:
         "Reserved productivity corners for intense concentration, task completion, and goal-based study sessions.",
       buttonText: "Enter Pod",
     },
     {
-      icon: "☕",
+      id: "relax-corner",
+      icon: <FaCoffee />,
       title: "Relax Corner",
       description:
         "Take a short break, recharge your mind, and enjoy a comfortable space between study sessions.",
       buttonText: "Take a Break",
     },
   ];
+
+  const handleExploreSpaces = () => {
+    const section = document.getElementById("lounges-section");
+    if (section) {
+      section.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
+  const handleViewActivities = () => {
+    navigate("/activities");
+  };
+
+  const handleCardClick = (id) => {
+    navigate(`/longues/${id}`);
+  };
 
   return (
     <>
@@ -63,13 +88,17 @@ function Longues() {
             </p>
 
             <div className="longues-hero-buttons">
-              <button className="primary-btn">Explore Spaces</button>
-              <button className="secondary-btn">View Activities</button>
+              <button className="primary-btn" onClick={handleExploreSpaces}>
+                Explore Spaces
+              </button>
+              <button className="secondary-btn" onClick={handleViewActivities}>
+                View Activities
+              </button>
             </div>
           </div>
         </section>
 
-        <section className="lounges-section">
+        <section className="lounges-section" id="lounges-section">
           <h2 className="section-heading">Choose Your Space</h2>
 
           <div className="lounges-grid">
@@ -78,7 +107,12 @@ function Longues() {
                 <div className="lounge-icon">{lounge.icon}</div>
                 <h3>{lounge.title}</h3>
                 <p>{lounge.description}</p>
-                <button className="card-btn">{lounge.buttonText}</button>
+                <button
+                  className="card-btn"
+                  onClick={() => handleCardClick(lounge.id)}
+                >
+                  {lounge.buttonText}
+                </button>
               </div>
             ))}
           </div>
