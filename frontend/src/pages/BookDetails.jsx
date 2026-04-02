@@ -3,9 +3,13 @@ import Footer from "../components/Footer";
 import "./BookDetails.css";
 import { useParams } from "react-router-dom";
 import booksData from "../assets/bookData.js";
+import { useEffect } from "react";
 
 function BookDetails() {
   const { id } = useParams();
+ useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   const book = booksData.find((item) => item.id === Number(id));
 
   if (!book) {
